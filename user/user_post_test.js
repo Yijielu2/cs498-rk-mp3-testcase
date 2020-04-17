@@ -150,9 +150,10 @@ async function two() {
     }
 }
 
-async function three(taskList) {
+async function three() {
     // New user with valid pending tasks
     try {
+        const taskList = (await axios.get(config.taskUrl)).data.data;
         await createNewUsersWithValidPendingTasks(taskList);
         console.log('Create New User With Valid Pending Tasks Test Passed');
     } catch (error) {
@@ -164,7 +165,6 @@ async function three(taskList) {
 async function generalPostTest() {
     const userList = (await axios.get(config.userUrl)).data.data;
     const taskList = (await axios.get(config.taskUrl)).data.data;
-
     one();
     two();
     three(taskList);

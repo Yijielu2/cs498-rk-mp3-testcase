@@ -161,6 +161,7 @@ async function testTwo() {
 async function testThree() {
     // New task with valid assigned user
     try {
+        const userList = (await axios.get(config.userUrl)).data.data;
         await createNewTasksWithValidAssignedUser(userList);
     } catch (error) {
         console.log('POST valid tasks with valid user failed');
