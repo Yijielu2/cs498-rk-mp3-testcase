@@ -18,6 +18,8 @@ function generateRandomTask() {
 }
 
 function isCorrectResult(task, result) {
+    task.assignedUser = task.assignedUser ? task.assignedUser : '';
+    task.assignedUserName = task.assignedUserName ? task.assignedUserName : 'unassigned';
     return task.name === result.name &&
             task.deadline === (new Date(result.deadline)).valueOf() &&
             task.description === result.description && 
@@ -37,7 +39,7 @@ function convertResult(result) {
     };
 }
 
-async function createNewTassWithoutAssignedUser() {
+async function createdTasksWithoutAssignedUser() {
     for (let i = 0; i < 100; i++) {
         const task = generateRandomTask();
         try {
@@ -133,10 +135,10 @@ async function createNewTasksWithValidAssignedUser(userList) {
     }
 }
 
-async function testOne() {
+async function one() {
     // New task without assigned user
     try {
-        await createNewTassWithoutAssignedUser();
+        await createdTasksWithoutAssignedUser();
     } catch (error) {
         infoHandler.printErrorInfo('POST', config.taskUrl, '', '');
         console.log('POST valid tasks without assigned user failed');
@@ -146,7 +148,7 @@ async function testOne() {
     console.log('POST valid tasks without assigned user successed');
 }
 
-async function testTwo() {
+async function two() {
     // New task with invalid assigned user
     try {
         await createNewTasksWithInvalidAssignedUser();
@@ -158,7 +160,7 @@ async function testTwo() {
     console.log('POST valid tasks with invalid user successed');
 }
 
-async function testThree() {
+async function three() {
     // New task with valid assigned user
     try {
         const userList = (await axios.get(config.userUrl)).data.data;
@@ -174,12 +176,12 @@ async function generalPostTest() {
     const userList = (await axios.get(config.userUrl)).data.data;
     const taskList = (await axios.get(config.taskUrl)).data.data;
 
-    testOne();
-    testTwo();
-    testThree();
+    one();
+    two();
+    three();
 }
 
 module.exports.generalPostTest = generalPostTest;
-module.exports.testOne = testOne;
-module.exports.testTwo = testTwo;
-module.exports.testThree = testThree;
+module.exports.one = one;
+module.exports.two = two;
+module.exports.three = three;
